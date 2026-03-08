@@ -1,6 +1,6 @@
 """
-Dashboard Page
-Aggregate analytics across all screening sessions.
+Vibe Dashboard
+The big picture. How are your vibes performing across all sessions?
 """
 import streamlit as st
 import pandas as pd
@@ -33,14 +33,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ── Header ──────────────────────────────────────────────────────────────────────
-st.markdown("# 📊 Dashboard")
-st.caption("Aggregate insights across all screening sessions")
+st.markdown("# 📊 Vibe Dashboard")
+st.caption("The big picture — your vibe checking stats across all sessions")
 
 # ── Load data ───────────────────────────────────────────────────────────────────
 sessions = load_all_sessions()
 
 if not sessions:
-    st.info("No data yet. Run a screening from the **Screen Resumes** page to see analytics here.")
+    st.info("✨ No vibe data yet! Run your first screening from **Vibe Check** to see the numbers.")
     st.stop()
 
 # ── Compute aggregate stats ─────────────────────────────────────────────────────
@@ -123,8 +123,8 @@ df_sessions = pd.DataFrame([{
 st.dataframe(df_sessions, use_container_width=True, hide_index=True)
 
 # ── Most Common Missing Skills ──────────────────────────────────────────────────
-st.markdown("### 🔴 Most Common Missing Skills")
-st.caption("Skills that candidates lack most often across all sessions")
+st.markdown("### 🔴 Skills Candidates Keep Missing")
+st.caption("The skills your candidates keep bluffing about (or just don't have)")
 
 missing_counter: Counter = Counter()
 
@@ -144,8 +144,8 @@ else:
     st.caption("No skill data available yet.")
 
 # ── Top Candidates Across Sessions ──────────────────────────────────────────────
-st.markdown("### 🏆 Top Candidates (All Time)")
-st.caption("Highest scoring candidates across all sessions")
+st.markdown("### 🏆 Vibes Hall of Fame")
+st.caption("The candidates with the strongest vibes across all your screenings")
 
 all_candidates = []
 for s in sessions:

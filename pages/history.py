@@ -1,6 +1,6 @@
 """
-History Page
-Browse past screening sessions, view details, re-download exports.
+Past Vibes Page
+Revisit your screening sessions and relive the vibe checks.
 """
 import streamlit as st
 import pandas as pd
@@ -40,14 +40,14 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ── Header ──────────────────────────────────────────────────────────────────────
-st.markdown("# 📜 Screening History")
-st.caption("All past screening sessions saved on this machine")
+st.markdown("# 📜 Past Vibes")
+st.caption("Every vibe check you've ever run, saved right here on your machine")
 
 # ── Load sessions ───────────────────────────────────────────────────────────────
 sessions = load_all_sessions()
 
 if not sessions:
-    st.info("No sessions yet. Go to **Screen Resumes** to run your first screening.")
+    st.info("✨ No vibes checked yet! Head to **Vibe Check** to start your first screening.")
     st.stop()
 
 st.markdown(f"**{len(sessions)}** session(s) found")

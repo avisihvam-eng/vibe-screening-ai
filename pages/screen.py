@@ -1,6 +1,6 @@
 """
-Screen Resumes Page
-Main screening workflow: upload JD + resumes → process → results with skill gaps.
+Vibe Check Page
+Drop the JD, throw in the resumes, and let the vibes sort themselves out.
 """
 import streamlit as st
 import time
@@ -75,34 +75,61 @@ st.markdown("""
 # ── Header ──────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="app-header">
-    <h1>📄 AutoResume Filter 40</h1>
-    <p>Upload a job description + resumes → get a ranked shortlist with skill gap analysis.</p>
+    <h1>✨ Vibe Screening AI</h1>
+    <p>Drop a JD, throw in some resumes, and let the vibes decide who makes it. No gut feelings required.</p>
 </div>
 """, unsafe_allow_html=True)
 
+# ── About Section ───────────────────────────────────────────────────────────────
+with st.expander("🤖 What is this? (and what it's NOT)", expanded=False):
+    st.markdown("""
+**Vibe Screening AI** is your AI-powered recruiting sidekick that does the boring part
+of hiring — reading 500 resumes so you don't have to.
+
+#### ✨ What it IS:
+- **A vibe-checker for resumes** — uses semantic AI to understand *meaning*, not just keywords
+- **A skill gap detective** — shows exactly which skills each candidate has (and which they're bluffing about)
+- **A time-saver** — screens 100 resumes in under 2 minutes. That's faster than your coffee break
+- **Privacy-first** — everything runs on YOUR machine. No data leaves. No cloud. No creepy tracking
+- **100% free** — no API keys, no subscriptions, no "upgrade to Pro" popups
+
+#### 🚫 What it is NOT:
+- **Not a replacement for human judgment** — it ranks candidates, you make the call
+- **Not a keyword matcher** — it uses actual AI embeddings, so "ML Engineer" and "Machine Learning Developer" are treated as the same vibe
+- **Not biased** — it doesn't care about names, photos, or fancy fonts. Just skills and context
+- **Not your ATS** — it's the fun part before the ATS. Think of it as the bouncer at the club, not the club itself
+- **Not magic** — if the resume is a potato-quality PDF, even AI can't read it. Garbage in, garbage out
+
+#### 🎯 The Vibe Philosophy:
+> *"Traditional screening: Read 500 resumes, cry, hire someone random.*
+> *Vibe screening: Let AI read 500 resumes, sip chai, hire someone good."*
+
+Built with ❤️ and semantic embeddings by people who were tired of reading resumes.
+    """)
+
 # ── Sidebar ─────────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("## ⚙️ Settings")
+    st.markdown("## ✨ Vibe Controls")
     threshold = st.slider(
-        "Match Threshold (%)",
+        "Vibe Threshold (%)",
         min_value=0,
         max_value=100,
         value=40,
         step=5,
-        help="Candidates scoring at or above this threshold will be shortlisted.",
+        help="Only candidates whose vibe matches at or above this level will make the cut.",
     )
     st.markdown("---")
-    st.markdown("### 📋 How It Works")
+    st.markdown("### 🎯 How to Vibe Check")
     st.markdown("""
-1. Paste the **Job Description**
-2. Upload **resumes** (PDF / DOCX)
-3. Click **Process Resumes**
-4. View **skill gaps** & download results
+1. Drop the **Job Description**
+2. Throw in the **resumes** (PDF / DOCX)
+3. Hit **Check the Vibes**
+4. See who passed the vibe check ✨
     """)
     st.markdown("---")
     st.markdown(
-        "<small style='color:#888'>Powered by <code>all-MiniLM-L6-v2</code> embeddings<br>"
-        "No paid APIs required</small>",
+        "<small style='color:#888'>Powered by <code>all-MiniLM-L6-v2</code> vibes<br>"
+        "Zero APIs. Zero cost. Pure vibes.</small>",
         unsafe_allow_html=True,
     )
 
@@ -110,7 +137,7 @@ with st.sidebar:
 col_jd, col_resumes = st.columns([1, 1], gap="large")
 
 with col_jd:
-    st.markdown("### 📝 Job Description")
+    st.markdown("### 📝 Drop the JD")
     jd_text = st.text_area(
         "Paste the full job description here",
         height=300,
@@ -119,7 +146,7 @@ with col_jd:
     )
 
 with col_resumes:
-    st.markdown("### 📁 Upload Resumes")
+    st.markdown("### 📁 Throw in the Resumes")
     uploaded_files = st.file_uploader(
         "Upload PDF or DOCX files",
         type=["pdf", "docx"],
@@ -136,7 +163,7 @@ with col_resumes:
 st.markdown("---")
 
 process_btn = st.button(
-    "🚀 Process Resumes",
+    "✨ Check the Vibes",
     use_container_width=True,
     type="primary",
     disabled=not (jd_text and uploaded_files),
@@ -223,7 +250,7 @@ if process_btn and jd_text and uploaded_files:
     progress.empty()
 
     # ── Results ─────────────────────────────────────────────────────────────
-    st.markdown("## 📊 Results")
+    st.markdown("## ✨ Vibe Check Results")
     st.caption(f"Session: `{session_id}` — saved to history")
 
     # Metric cards
@@ -349,8 +376,8 @@ if process_btn and jd_text and uploaded_files:
             st.dataframe(df_below, use_container_width=True, hide_index=True)
 
 elif not jd_text and not uploaded_files:
-    st.info("👆 Paste a job description and upload resumes to get started.")
+    st.info("✨ Drop a JD and throw in some resumes to start the vibe check.")
 elif not jd_text:
-    st.warning("⚠️ Please paste a job description.")
+    st.warning("📝 You forgot the JD! Can't check vibes without knowing what vibes we're checking.")
 elif not uploaded_files:
-    st.warning("⚠️ Please upload at least one resume (PDF or DOCX).")
+    st.warning("📁 No resumes yet! Drop some PDFs or DOCX files and let's see who's got the vibes.")
