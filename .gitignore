@@ -1,0 +1,11 @@
+# AutoResume Filter 40
+.venv/
+__pycache__/
+*.pyc
+.streamlit/secrets.toml
+test_data/
+*.xlsx
+*.egg-info/
+dist/
+build/
+.env
