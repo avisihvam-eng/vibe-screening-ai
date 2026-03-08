@@ -1,5 +1,6 @@
 # ✨ Vibe Screening AI
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/avisihvam-eng/vibe-screening-ai)
 > *"Traditional screening: Read 500 resumes, cry, hire someone random.*
 > *Vibe screening: Let AI read 500 resumes, sip chai, hire someone good."*
 
@@ -28,8 +29,8 @@ Drop a **job description**, throw in a pile of **resumes** (PDF or DOCX), and le
 
 ```bash
 # Clone
-git clone https://github.com/avisihvam-eng/autoresume-filter-40.git
-cd autoresume-filter-40
+git clone https://github.com/avisihvam-eng/vibe-screening-ai.git
+cd vibe-screening-ai
 
 # Setup (Python 3.12 or 3.13 — NOT 3.14 alpha)
 python -m venv .venv
