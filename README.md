@@ -1,10 +1,14 @@
 # ✨ Vibe Screening AI
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/avisihvam-eng/vibe-screening-ai)
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://vibe-screenin-knf4qjdnzmwavvtuu9gxfi.streamlit.app/)
+
 > *"Traditional screening: Read 500 resumes, cry, hire someone random.*
 > *Vibe screening: Let AI read 500 resumes, sip chai, hire someone good."*
 
 AI-powered resume screening that actually understands what candidates are about — not just keyword bingo.
+
+👉 **[Try it live here](https://vibe-screenin-knf4qjdnzmwavvtuu9gxfi.streamlit.app/)** (No installation required)
 
 ## What it Does
 
