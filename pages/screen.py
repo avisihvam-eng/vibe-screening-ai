@@ -147,17 +147,39 @@ with col_jd:
 
 with col_resumes:
     st.markdown("### 📁 Throw in the Resumes")
-    uploaded_files = st.file_uploader(
-        "Upload PDF or DOCX files",
-        type=["pdf", "docx"],
-        accept_multiple_files=True,
-        label_visibility="collapsed",
-    )
-    if uploaded_files:
-        st.markdown(
-            f"<span class='badge-success'>✓ {len(uploaded_files)} file(s) selected</span>",
-            unsafe_allow_html=True,
+    tab_upload, tab_paste = st.tabs(["📎 Upload Files", "📋 Paste Text"])
+
+    with tab_upload:
+        uploaded_files = st.file_uploader(
+            "Upload PDF or DOCX files",
+            type=["pdf", "docx"],
+            accept_multiple_files=True,
+            label_visibility="collapsed",
         )
+        if uploaded_files:
+            st.markdown(
+                f"<span class='badge-success'>✓ {len(uploaded_files)} file(s) selected</span>",
+                unsafe_allow_html=True,
+            )
+
+    with tab_paste:
+        pasted_resumes_raw = st.text_area(
+            "Paste resume content here",
+            height=250,
+            placeholder="Copy-paste the full resume text here.\n\nTo add multiple resumes, separate them with a line of dashes:\n---\n\n(Each section between dashes = one resume)",
+            label_visibility="collapsed",
+        )
+        if pasted_resumes_raw and pasted_resumes_raw.strip():
+            # Split by --- separator
+            parts = [p.strip() for p in pasted_resumes_raw.split("---") if p.strip()]
+            st.markdown(
+                f"<span class='badge-success'>✓ {len(parts)} pasted resume(s) detected</span>",
+                unsafe_allow_html=True,
+            )
+        else:
+            parts = []
+
+has_input = jd_text and (uploaded_files or parts)
 
 # ── Processing ──────────────────────────────────────────────────────────────────
 st.markdown("---")
@@ -166,11 +188,21 @@ process_btn = st.button(
     "✨ Check the Vibes",
     use_container_width=True,
     type="primary",
-    disabled=not (jd_text and uploaded_files),
+    disabled=not has_input,
 )
 
-if process_btn and jd_text and uploaded_files:
-    total = len(uploaded_files)
+if process_btn and has_input:
+    # Build a unified list of resume items: (name, text_or_none, bytes_or_none)
+    resume_items = []
+    if uploaded_files:
+        for uf in uploaded_files:
+            resume_items.append({"type": "file", "name": uf.name, "file": uf})
+    if parts:
+        for idx, txt in enumerate(parts, 1):
+            label = f"Pasted Resume #{idx}"
+            resume_items.append({"type": "pasted", "name": label, "text": txt})
+
+    total = len(resume_items)
     progress = st.progress(0, text="Initializing...")
     status_area = st.empty()
 
@@ -189,18 +221,21 @@ if process_btn and jd_text and uploaded_files:
     candidates: list[dict] = []
     failed_files: list[tuple[str, str]] = []
 
-    for i, uploaded_file in enumerate(uploaded_files):
-        file_name = uploaded_file.name
+    for i, item in enumerate(resume_items):
+        file_name = item["name"]
         pct = 10 + int(75 * (i / total))
         progress.progress(pct, text=f"Processing {file_name} ({i+1}/{total})")
         status_area.info(f"⏳ Processing **{file_name}**...")
 
-        # Parse
-        file_bytes = uploaded_file.read()
-        text, err = extract_text(file_name, file_bytes)
-        if err:
-            failed_files.append((file_name, err))
-            continue
+        # Parse — either from file bytes or directly from pasted text
+        if item["type"] == "file":
+            file_bytes = item["file"].read()
+            text, err = extract_text(file_name, file_bytes)
+            if err:
+                failed_files.append((file_name, err))
+                continue
+        else:
+            text = item["text"]
 
         # Extract info
         info = extract_candidate_info(text)
